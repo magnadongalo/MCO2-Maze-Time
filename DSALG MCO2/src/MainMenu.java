@@ -4,12 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenu extends JFrame implements ActionListener {
-    private JLabel title, title2;
+    private JLabel title;
     private JButton loadmaze, startsim, exit;
     private JPanel panel, textPanel;
     private JPanel masterPanel;
+    private boolean running;
 
     public MainMenu() {
+        running = true;
+
         super("Main Menu");
         this.setSize(600, 600);
         this.setResizable(false);
@@ -66,14 +69,19 @@ public class MainMenu extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loadmaze) {
-
+            this.setVisible(false);
         } else if (e.getSource() == startsim) {
-
+            this.setVisible(false);
         } else if (e.getSource() == exit) {
-            System.exit(0);
+            running = false;
+            this.dispose();
         }
     }
 }

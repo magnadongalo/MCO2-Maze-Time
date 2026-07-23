@@ -1,5 +1,12 @@
+import java.io.File;
+
 public class Driver {
     public static void main(String[] args) {
-        new MainMenu();
+        MainMenu mainMenu;
+        Maze maze = new Maze(new File("Maze.txt"));
+
+        maze.displayMaze();
+
+
     }
 }
