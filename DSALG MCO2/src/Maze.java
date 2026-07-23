@@ -7,12 +7,11 @@ public class Maze {
     private int rows;
     private int cols;
     private String[] maze;
-    private boolean[][] visited;
 
     //For ANSI Coloring
-    private final String BLUE = "\u001B[34m";
-    private final String RED = "\u001B[31m";
-    private final String RESET = "\u001B[0m";
+    private static final String BLUE = "\u001B[34m";
+    private static final String RED = "\u001B[31m";
+    private static final String RESET = "\u001B[0m";
 
     public Maze (File f) {
         String temp;
@@ -42,9 +41,6 @@ public class Maze {
 
                 } else {
                     //The maze is read starting row 1
-                    temp = temp.replace('#','█');
-                    temp = temp.replace("S", BLUE + "█" + RESET);
-                    temp = temp.replace("G", RED + "█" + RESET);
                     res.add(i-1, temp);
                 }
 
@@ -55,12 +51,19 @@ public class Maze {
         }
 
         maze = res.toArray(new String[rows]);
-        visited = new boolean[rows][cols];
     }
 
     public void displayMaze() {
         for (String s : maze) {
+            s = s.replace('#','█');
+            s = s.replace("S", BLUE + "█" + RESET);
+            s = s.replace("G", RED + "█" + RESET);
+
             System.out.println(s);
         }
+    }
+
+    public String[] getMaze(){
+        return maze;
     }
 }

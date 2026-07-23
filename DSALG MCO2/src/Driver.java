@@ -7,6 +7,6 @@ public class Driver {
 
         maze.displayMaze();
 
-
+        new MazeFrame(maze);
     }
 }
