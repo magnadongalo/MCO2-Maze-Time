@@ -4,30 +4,76 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 
-public class GamePanel extends Panel implements ActionListener, KeyListener {
-    private Player player;
+public class Panel extends JPanel implements ActionListener {
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 600;
+    public static final int UNIT_SIZE = 20;
+    public static final int DELAY = 25;
 
-    public GamePanel(Maze maze) {
-        super(maze);
-        player = new Player(getStartingPos());
+    protected String[] maze;
+    protected Player player;
+    protected boolean running = false;
+    protected Timer timer;
+    protected Point goal;
 
-        this.addKeyListener(this);
-        startSimulation();
+    protected JButton exit = new JButton("<html><center>EXIT<br>PROGRAM</center></html>");
+
+    public Panel(Maze maze) {
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.setBackground(Color.BLACK);
+        this.setFocusable(true);
+
+        this.maze = maze.getMaze();
+        goal = new Point(getGoalPos());
+
+        exit.setFont(new Font("Nintendo NES Font", Font.PLAIN, 15));
+        exit.setHorizontalAlignment(SwingConstants.CENTER);
+        exit.addActionListener(this);
+
+    }
+
+    public void startSimulation() {
+        running = true;
+        timer = new Timer(DELAY, this);
+        timer.start();
+    }
+
+    public Point getStartingPos() {
+        int i, j;
+        int x=0, y=0;
+
+        for (i=0; i<maze.length; i++) {
+            for (j=0; j<maze.length; j++) {
+                if (maze[i].charAt(j) == 'S') {
+                    x = j;
+                    y = i;
+                }
+            }
+        }
+
+        return new Point(x, y);
+    }
+
+    public Point getGoalPos() {
+        int i, j;
+        int x=0, y=0;
+
+        for (i=0; i<maze.length; i++) {
+            for (j=0; j<maze.length; j++) {
+                if (maze[i].charAt(j) == 'G') {
+                    x = j;
+                    y = i;
+                }
+            }
+        }
+
+        return new Point(x, y);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         draw(g);
-    }
-
-    public void checkGoal(Graphics g) {
-        if (player.getPos().equals(goal)) {
-            running = false;
-        }
-
-        if (!running)
-            timer.stop();
     }
 
     public void draw(Graphics g) {
@@ -59,11 +105,18 @@ public class GamePanel extends Panel implements ActionListener, KeyListener {
                     }
                 }
             }
-
-            player.draw(g);
         }
         else
             reachGoal(g);
+    }
+
+    public void checkGoal() {
+        if (player.getPos().equals(goal)) {
+            running = false;
+        }
+
+        if (!running)
+            timer.stop();
     }
 
     public void reachGoal(Graphics g) {
@@ -85,21 +138,6 @@ public class GamePanel extends Panel implements ActionListener, KeyListener {
                 clip.start();
             }
         } catch (Exception _){}
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        player.keyPressed(e, maze);
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
     }
 
     @Override
