@@ -1,0 +1,114 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+public class MazeSolver {
+
+    private static class Point
+    {
+        int x;
+        int y;
+        Point parent;
+        public Point(int x, int y, Point parent)
+        {
+            this.x = x;
+            this.y = y;
+            this.parent = parent;
+        }
+    }
+
+    public static List<int[]> BreadthFirstSearch(int[][] maze, int[] start, int[] end, double timePerCheck)
+    {
+        // Make a list for path thing
+        List<int[]> path = new ArrayList<>();
+
+        // guard clause
+
+        // rows and columns
+        int rows = maze.length;
+        int cols = maze[0].length;
+
+        int nodesChecked = 0;
+
+        // BFS uses a queue to check each node
+        // Think of BFS as like a wave going through the maze
+        Queue<Point> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[rows][cols];
+        boolean solved = false;
+
+        // Directions of movement
+        int[][] directions = {
+                {-1, 0},
+                {1, 0},
+                {0, -1},
+                {0, 1}
+        };
+
+        // Initialize Starting Point
+        Point startPoint = new Point(start[0], start[1], null);
+        queue.add(startPoint);
+        visited[start[0]][start[1]] = true;
+
+        // Keep searching until maze is solved or queue is empty
+        while(!queue.isEmpty() && !solved)
+        {
+            // Dequeue starting point to check neighbor points
+            Point current = queue.poll();
+
+            // valid path has been found
+            if (current.x == end[0] && current.y == end[1])
+            {
+                System.out.println("found path!");
+                solved = true;
+
+                Point temp = current;
+                while (temp != null)
+                {
+                    path.addFirst(new int[]{temp.x, temp.y});
+                    temp = temp.parent;
+                }
+            }
+            else
+            {
+                // search through all neighbor points per point
+                for (int[] direction : directions)
+                {
+                    int nextX = current.x + direction[0];
+                    int nextY = current.y + direction[1];
+
+                    if (nextX >= 0 && nextX < rows &&  nextY >= 0 && nextY < cols
+                            && (maze[nextX][nextY] == 0 || maze[nextX][nextY] == 9)
+                            && !visited[nextX][nextY])
+                    {
+                        visited[nextX][nextY] = true;
+                        queue.add(new Point(nextX, nextY, current));
+                        nodesChecked++;
+                    }
+                }
+            }
+        }
+
+        // debug
+        for (int[] points : path)
+        {
+            System.out.println(points[0] + " " + points[1]);
+        }
+
+        System.out.println("Nodes Checked: " + nodesChecked);
+
+        // no solution
+        if (!solved)
+        {
+            System.out.println("No solution.");
+        }
+
+        // the path to be returned
+        return path;
+    }
+
+    public  static void DepthFirstSearch()
+    {
+
+    }
+}
