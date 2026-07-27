@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.nio.file.Path;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.*;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Main {
 
         // Change "Maze.txt" to any text file you have in the Mazes folder
         // Generates file path to the maze text file
-        Path path = Path.of("Mazes", "Maze.txt");
+        Path path = Path.of("Mazes", "Maze4.txt");
 
         // Variables
         int rows = 0;
@@ -25,7 +26,7 @@ public class Main {
         int[] start = new int[0];
         int[] end = new int[0];
 
-        List<int[]> solvedPath;
+        List<int[]> solvedPath = null;
 
         // Buffered reader instead of Scanner
         try(BufferedReader reader = new BufferedReader(new FileReader(path.toString())))
@@ -50,6 +51,7 @@ public class Main {
             for(int i = 0; i < rows; i++)
             {
                 String temp = reader.readLine();
+
                 for(int j = 0; j < cols; j++)
                 {
                     switch (temp.charAt(j))
@@ -75,8 +77,12 @@ public class Main {
             System.out.println("Start: " + Arrays.toString(start));
             System.out.println("End: " + Arrays.toString(end));
 
-            solvedPath = MazeSolver.BreadthFirstSearch(maze, start, end, 0.1f);
+            // UNCOMMENT ONE TO TEST ALL SEARCH ALGORITHMS
+            // solvedPath = MazeSolver.BreadthFirstSearch(maze, start, end, 0.1f);
+            // solvedPath = MazeSolver.DepthFirstSearch(maze, start, end, 0.1f);
+            // solvedPath = Astar.AstarSearch(maze, start, end);
 
+            // Display Function
             UserInterface(maze, rows, cols, solvedPath);
         }
         catch (FileNotFoundException e)
@@ -171,7 +177,7 @@ public class Main {
         switch (maze[i][j])
         {
             case 0:
-                if (solvedPath.stream().anyMatch(x -> x[0] == i && x[1] == j))
+                if (solvedPath != null && solvedPath.stream().anyMatch(x -> x[0] == i && x[1] == j))
                 {
                     System.out.println("Matched with: " + i + ", " + j);
                     squarePanel.setBackground(Color.decode("#ffdd78"));

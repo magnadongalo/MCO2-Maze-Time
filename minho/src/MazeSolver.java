@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class MazeSolver {
 
@@ -107,8 +104,70 @@ public class MazeSolver {
         return path;
     }
 
-    public  static void DepthFirstSearch()
+    public static List<int[]> DepthFirstSearch(int[][] maze, int[] start, int[] end, double timePerCheck)
     {
+        List<int[]> path = new ArrayList<>();
 
+        int rows = maze.length;
+        int cols = maze[0].length;
+        boolean[][] visited = new boolean[rows][cols];
+
+        if (searchDfs(maze, start, end, visited, path))
+        {
+            return path;
+        }
+        else
+        {
+            System.out.println("No solution.");
+            return null;
+        }
+    }
+
+    public static boolean searchDfs(int[][] maze, int[] point, int[] target,
+                              boolean[][] visited, List<int[]> path)
+    {
+        int x = point[0];
+        int y = point[1];
+
+        // Directions of movement
+        int[][] directions = {
+                {-1, 0},
+                {1, 0},
+                {0, -1},
+                {0, 1}
+        };
+
+        if (x < 0 ||
+                x >= maze.length ||
+                y < 0 ||
+                y >= maze[0].length ||
+                maze[x][y] == 1 || visited[x][y])
+        {
+            return false;
+        }
+
+        visited[x][y] = true;
+        path.add(new int[]{x, y});
+
+        if (x == target[0] && y == target[1])
+        {
+            return true;
+        }
+
+        for (int[] direction : directions)
+        {
+            int nextX = point[0] + direction[0];
+            int nextY = point[1] + direction[1];
+
+            int[] nextPoint = new int[]{nextX, nextY};
+
+            if (searchDfs(maze, nextPoint, target, visited, path))
+            {
+                return true;
+            }
+        }
+
+        path.removeLast();
+        return false;
     }
 }
