@@ -22,15 +22,15 @@ public class MazePanel extends JPanel implements ActionListener {
         HEIGHT = rows * 30;
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-        this.start = new Point(start[0], start[1]);
-        this.end = new Point(end[0], end[1]);
+        this.start = new Point(start[1], start[0]);
+        this.end = new Point(end[1], end[0]);
 
         this.maze = Arrays.copyOf(maze, maze.length);
         this.solvedPath = solvedPath;
 
         cursor = new Cursor(this.start);
-        //his.setVisible(true);
-        startSimulation();
+        this.setVisible(true);
+        //startSimulation();
     }
 
     public void startSimulation() {
@@ -47,38 +47,35 @@ public class MazePanel extends JPanel implements ActionListener {
 
     public void draw(Graphics g) {
         int i, j;
+        g.setColor(Color.GRAY);
 
-        if (running) {
-            g.setColor(Color.GRAY);
-
-            for (i=0; i<HEIGHT/30; i++) {
-                for (j=0; j<WIDTH/30; j++) {
-                    switch (maze[i][j]) {
-                        case 0:
-                            int tempI = i;
-                            int tempJ = j;
-                            if (solvedPath != null && solvedPath.stream().anyMatch(x -> x[0] == tempI && x[1] == tempJ))
-                                g.setColor(Color.decode("#ffdd78"));
-                            else
-                                g.setColor(Color.WHITE);
-                            break;
-                        case 1:
-                            g.setColor(Color.BLACK);
-                            break;
-                        case 5:
-                            g.setColor(Color.BLUE);
-                            break;
-                        case 9:
-                            g.setColor(Color.RED);
-                            break;
-                    }
-
-                    g.fillRect(j*30, i*30, 30, 30);
+        for (i=0; i<HEIGHT/30; i++) {
+            for (j=0; j<WIDTH/30; j++) {
+                switch (maze[i][j]) {
+                    case 0:
+                        int tempI = i;
+                        int tempJ = j;
+                        if (solvedPath != null && solvedPath.stream().anyMatch(x -> x[0] == tempI && x[1] == tempJ))
+                            g.setColor(Color.decode("#ffdd78"));
+                        else
+                            g.setColor(Color.WHITE);
+                        break;
+                    case 1:
+                        g.setColor(Color.BLACK);
+                        break;
+                    case 5:
+                        g.setColor(Color.BLUE);
+                        break;
+                    case 9:
+                        g.setColor(Color.RED);
+                        break;
                 }
-            }
 
-            cursor.draw(g);
+                g.fillRect(j*30, i*30, 30, 30);
+            }
         }
+
+        cursor.draw(g);
     }
 
     public void checkGoal() {
@@ -98,7 +95,7 @@ public class MazePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //called every 25 milliseconds
+        //called every 100 milliseconds
         move();
         checkGoal();
         revalidate();

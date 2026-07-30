@@ -20,7 +20,7 @@ public class Main {
         // Generates file path to the maze text file
         //Path path = Path.of("Mazes", "Maze4.txt");
         // for cmd compilation
-        Path path = Paths.get("C:\\Users\\edrie\\OneDrive\\Desktop\\Code files\\IT MOVES\\Mazes\\Maze.txt");
+        Path path = Paths.get("C:\\Users\\edrie\\OneDrive\\Desktop\\Code files\\IT MOVES\\Mazes\\Maze6.txt");
 
         // Variables
         int rows = 0;

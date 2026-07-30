@@ -62,8 +62,9 @@ public class Maze extends JFrame {
                     button.setBackground(Color.LIGHT_GRAY);
                     break;
                 case 2:
-                    button.setText("Astar");
+                    button.setText("Start");
                     button.setBackground(Color.LIGHT_GRAY);
+                    button.addActionListener(e -> gridPanel.startSimulation());
                     break;
                 case 3:
                     button.setText("Return to Menu");
