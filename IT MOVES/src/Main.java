@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.*;
@@ -17,7 +18,9 @@ public class Main {
 
         // Change "Maze.txt" to any text file you have in the Mazes folder
         // Generates file path to the maze text file
-        Path path = Path.of("Mazes", "Maze4.txt");
+        //Path path = Path.of("Mazes", "Maze4.txt");
+        // for cmd compilation
+        Path path = Paths.get("C:\\Users\\edrie\\OneDrive\\Desktop\\Code files\\IT MOVES\\Mazes\\Maze.txt");
 
         // Variables
         int rows = 0;
@@ -80,7 +83,7 @@ public class Main {
 
             // UNCOMMENT ONE TO TEST ALL SEARCH ALGORITHMS
             solvedPath = MazeSolver.BreadthFirstSearch(maze, start, end, 0.1f);
-            // solvedPath = MazeSolver.DepthFirstSearch(maze, start, end, 0.1f);
+            //solvedPath = MazeSolver.DepthFirstSearch(maze, start, end, 0.1f);
             // solvedPath = Astar.AstarSearch(maze, start, end);
 
             // Display Function
@@ -95,6 +98,4 @@ public class Main {
             System.out.println("Error reading file");
         }
     }
-
-
 }

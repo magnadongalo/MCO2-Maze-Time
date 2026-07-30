@@ -81,10 +81,6 @@ public class MazePanel extends JPanel implements ActionListener {
         }
     }
 
-    public boolean isRunning() {
-        return running;
-    }
-
     public void checkGoal() {
         if (cursor.getPos().equals(end)) {
             running = false;
@@ -105,6 +101,7 @@ public class MazePanel extends JPanel implements ActionListener {
         //called every 25 milliseconds
         move();
         checkGoal();
+        revalidate();
         repaint();
     }
 }

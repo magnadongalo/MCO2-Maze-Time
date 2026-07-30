@@ -69,7 +69,7 @@ public class Maze extends JFrame {
                     button.setText("Return to Menu");
                     button.setForeground(Color.WHITE);
                     button.setBackground(Color.decode("#ff7a85"));
-                    button.addActionListener(e -> this.dispose());
+                    button.addActionListener(e -> dispose());
                     break;
             }
 
