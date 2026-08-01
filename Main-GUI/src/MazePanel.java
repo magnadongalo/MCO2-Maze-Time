@@ -55,6 +55,9 @@ public class MazePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         draw(g);
+
+        if (running || !cursor.getPos().equals(start) || cursor.getPos().equals(end))
+            cursor.draw(g);
     }
 
     public void draw(Graphics g) {
@@ -86,8 +89,6 @@ public class MazePanel extends JPanel implements ActionListener {
                 g.fillRect(j*30, i*30, 30, 30);
             }
         }
-
-        cursor.draw(g);
     }
 
     public void checkGoal() {
