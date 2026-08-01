@@ -10,9 +10,9 @@ public class MazePanel extends JPanel implements ActionListener {
     private final Point start, end;
     private final int WIDTH, HEIGHT;
     private boolean running = false;
-    private Timer timer;
+    private Timer timer = new Timer(100, this);
     private final int[][] maze;
-    private final List<int[]> solvedPath;
+    private List<int[]> solvedPath = null;
     private int counter = 0;
 
     public MazePanel(java.awt.LayoutManager layoutManager, int[][] maze, int rows, int cols,
@@ -33,10 +33,22 @@ public class MazePanel extends JPanel implements ActionListener {
         //startSimulation();
     }
 
+    public void setSolvedPath(List<int[]> solvedPath) {
+        stopSimulation();
+        this.solvedPath = solvedPath;
+    }
+
     public void startSimulation() {
         this.running = true;
-        timer = new Timer(100, this);
         timer.start();
+    }
+
+    public void stopSimulation() {
+        this.running = false;
+        counter = 0;
+        cursor.move(start);
+        repaint();
+        timer.stop();
     }
 
     @Override

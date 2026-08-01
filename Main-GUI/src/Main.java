@@ -16,17 +16,42 @@ public class Main extends JFrame implements ActionListener {
     private JButton loadMaze, startSim, exit;
 
     // Variables
-    private int rows = 0;
-    private int cols = 0;
+    private int rows;
+    private int cols;
     private int[][] maze;
-    private boolean mazeLoaded = false;
+    private boolean mazeLoaded;
     private String filepath = "No file detected."; //Default state
 
-    private int[] start = new int[0];
-    private int[] end = new int[0];
+    private int[] start;
+    private int[] end;
     private List<int[]> solvedPath = null;
+    private static boolean running = false;
 
     public Main() {
+        initialize();
+        this.rows = 0;
+        this.cols = 0;
+        start = new int[0];
+        end = new int[0];
+        mazeLoaded = false;
+
+        running = true;
+    }
+
+    public Main(int[][] maze, int rows, int cols, int[] start, int[] end, List<int[]> solvedPath) {
+        initialize();
+        this.rows = rows;
+        this.cols = cols;
+        this.start = start;
+        this.end = end;
+        this.maze = maze;
+        this.solvedPath = solvedPath;
+        mazeLoaded = true;
+
+        running = true;
+    }
+
+    public void initialize() {
         this.setTitle("Maze Runner");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
@@ -70,7 +95,7 @@ public class Main extends JFrame implements ActionListener {
         exit.setFont(new Font("Century Gothic", Font.BOLD, 15));
         exit.setForeground(Color.WHITE);
         exit.setBackground(Color.decode("#ff7a85"));
-        exit.addActionListener(e -> this.dispose());
+        exit.addActionListener(this);
         c.gridy = 2;
         buttonPanel.add(exit, c);
 
@@ -87,6 +112,10 @@ public class Main extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         new Main();
+
+        if (!running) {
+            MazeSolver.stopSounds();
+        }
         //Maze.HelloWorld("print");
 
         //Uncomment line below for a surprise
@@ -97,18 +126,26 @@ public class Main extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loadMaze) {
+            MazeSolver.playSound("kh3menuOpen.wav");
             parseMaze();
         } else if (e.getSource() == startSim) {
             if (mazeLoaded) {
+                MazeSolver.playSound("kh3menuOpen.wav");
                 new Maze(maze, rows, cols, solvedPath, start, end);
                 this.dispose();
             }
-            else
+            else {
+                MazeSolver.playSound("kh3error.wav");
                 JOptionPane.showMessageDialog(null,
                         "No maze is currently loaded. \nPlease load a maze first.",
                         "Error",
                         JOptionPane.ERROR_MESSAGE
                 );
+            }
+        } else if (e.getSource() == exit) {
+            MazeSolver.playSound("kh3cancel.wav");
+            this.dispose();
+            running = false;
         }
     }
 
@@ -179,19 +216,22 @@ public class Main extends JFrame implements ActionListener {
             System.out.println("Start: " + Arrays.toString(start));
             System.out.println("End: " + Arrays.toString(end));
 
-            // UNCOMMENT ONE TO TEST ALL SEARCH ALGORITHMS
-            //solvedPath = MazeSolver.BreadthFirstSearch(maze, start, end, 0.1f);
+            // BFS will be our DEFAULT search path
+            solvedPath = MazeSolver.BreadthFirstSearch(maze, start, end, 0.1f);
             //solvedPath = MazeSolver.DepthFirstSearch(maze, start, end, 0.1f);
-            solvedPath = Astar.AstarSearch(maze, start, end);
+            //solvedPath = Astar.AstarSearch(maze, start, end);
             mazeLoaded = true;
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("File not found");
+            System.out.println("File not found!");
         }
         catch(IOException e)
         {
-            System.out.println("Error reading file");
+            System.out.println("Error reading file!");
+        }
+        catch(NumberFormatException e) {
+            System.out.println("Wrong type of file inputted!");
         }
     }
 }

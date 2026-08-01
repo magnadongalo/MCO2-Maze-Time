@@ -17,6 +17,10 @@ public class Cursor {
         pos.setLocation(nextPos[1], nextPos[0]);
     }
 
+    public void move(Point nextPos) {
+        pos.setLocation(nextPos);
+    }
+
     public Point getPos() {
         return pos;
     }
