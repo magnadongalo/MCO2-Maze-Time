@@ -6,9 +6,15 @@ import java.nio.file.*;
 import java.util.List;
 
 public class Maze extends JFrame {
+    private int[][] maze;
+    private int rows, cols;
 
     public Maze(int[][] maze, int rows, int cols, List<int[]> solvedPath, int[] start, int[] end)
     {
+        this.maze = maze;
+        this.rows = rows;
+        this.cols = cols;
+
         // JFRAME GUI SECTION -----------------------------------------------------------------
         this.setTitle("Maze");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,7 +66,10 @@ public class Maze extends JFrame {
                     button.setText("Return to Menu");
                     button.setForeground(Color.WHITE);
                     button.setBackground(Color.decode("#ff7a85"));
-                    button.addActionListener(e -> dispose());
+                    button.addActionListener(e -> {
+                        dispose();
+                        new Main();
+                    });
                     break;
             }
 

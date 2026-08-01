@@ -10,9 +10,21 @@ import javax.swing.*;
 import java.util.List;
 
 public class Main extends JFrame implements ActionListener {
+
     private JPanel subPanel, buttonPanel;
     private JLabel label = new JLabel("<html><center>Maze Runner</center></html>");
     private JButton loadMaze, startSim, exit;
+
+    // Variables
+    private int rows = 0;
+    private int cols = 0;
+    private int[][] maze;
+    private boolean mazeLoaded = false;
+    private String filepath = "No file detected."; //Default state
+
+    private int[] start = new int[0];
+    private int[] end = new int[0];
+    private List<int[]> solvedPath = null;
 
     public Main() {
         this.setTitle("Maze Runner");
@@ -77,24 +89,46 @@ public class Main extends JFrame implements ActionListener {
         new Main();
         //Maze.HelloWorld("print");
 
-        // Uncomment line below for a surprise
+        //Uncomment line below for a surprise
         //Maze.HelloWorld("67");
 
-        // Change "Maze.txt" to any text file you have in the Mazes folder
-        // Generates file path to the maze text file
-        //Path path = Path.of("Mazes", "Maze4.txt");
-        // for cmd compilation
-        Path path = Paths.get("C:\\Users\\edrie\\OneDrive\\Desktop\\Code files\\IT MOVES\\Mazes\\Maze2.txt");
+    }
 
-        // Variables
-        int rows = 0;
-        int cols = 0;
-        int[][] maze;
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == loadMaze) {
+            parseMaze();
+        } else if (e.getSource() == startSim) {
+            if (mazeLoaded) {
+                new Maze(maze, rows, cols, solvedPath, start, end);
+                this.dispose();
+            }
+            else
+                JOptionPane.showMessageDialog(null,
+                        "No maze is currently loaded. \nPlease load a maze first.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+        }
+    }
 
-        int[] start = new int[0];
-        int[] end = new int[0];
+    public String getFileName() {
+        JFileChooser chooser = new JFileChooser();
 
-        List<int[]> solvedPath = null;
+        //This would open in the PROJECT FOLDER, from which we can access Mazes folder
+        chooser.setCurrentDirectory(new File("."));
+        int result = chooser.showOpenDialog(chooser);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = chooser.getSelectedFile();
+            filepath = selectedFile.getAbsolutePath();
+        }
+
+        return filepath;
+    }
+
+    public void parseMaze() {
+        Path path = Paths.get(getFileName());
 
         // Buffered reader instead of Scanner
         try(BufferedReader reader = new BufferedReader(new FileReader(path.toString())))
@@ -149,9 +183,7 @@ public class Main extends JFrame implements ActionListener {
             //solvedPath = MazeSolver.BreadthFirstSearch(maze, start, end, 0.1f);
             //solvedPath = MazeSolver.DepthFirstSearch(maze, start, end, 0.1f);
             solvedPath = Astar.AstarSearch(maze, start, end);
-
-            // Display Function
-            new Maze(maze, rows, cols, solvedPath, start, end);
+            mazeLoaded = true;
         }
         catch (FileNotFoundException e)
         {
@@ -160,15 +192,6 @@ public class Main extends JFrame implements ActionListener {
         catch(IOException e)
         {
             System.out.println("Error reading file");
-        }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == loadMaze) {
-
-        } else if (e.getSource() == startSim) {
-
         }
     }
 }
