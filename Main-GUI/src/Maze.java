@@ -59,7 +59,7 @@ public class Maze extends JFrame {
                     button.setText("BFS");
                     button.setBackground(Color.LIGHT_GRAY);
                     button.addActionListener(e -> {
-                        MazeSolver.playSound("kh3menuOpen.wav");
+                        MazeSolver.playSound("kh3select.wav");
                         this.solvedPath = MazeSolver.BreadthFirstSearch(this.maze, this.start, this.end, 0.1f);
                         gridPanel.setSolvedPath(this.solvedPath);
                     });
@@ -68,7 +68,7 @@ public class Maze extends JFrame {
                     button.setText("DFS");
                     button.setBackground(Color.LIGHT_GRAY);
                     button.addActionListener(e -> {
-                        MazeSolver.playSound("kh3menuOpen.wav");
+                        MazeSolver.playSound("kh3select.wav");
                         this.solvedPath = MazeSolver.DepthFirstSearch(this.maze, this.start, this.end, 0.1f);
                         gridPanel.setSolvedPath(this.solvedPath);
                     });
@@ -77,7 +77,7 @@ public class Maze extends JFrame {
                     button.setText("A*");
                     button.setBackground(Color.LIGHT_GRAY);
                     button.addActionListener(e -> {
-                        MazeSolver.playSound("kh3menuOpen.wav");
+                        MazeSolver.playSound("kh3select.wav");
                         this.solvedPath = Astar.AstarSearch(this.maze, this.start, this.end);
                         gridPanel.setSolvedPath(this.solvedPath);
                     });
