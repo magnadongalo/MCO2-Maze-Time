@@ -223,14 +223,25 @@ public class Main extends JFrame implements ActionListener {
         }
         catch (FileNotFoundException e)
         {
+            MazeSolver.playSound("kh3error.wav");
             System.out.println("File not found!");
+            JOptionPane.showMessageDialog(null,
+                    "File not found!", "FileNotFound Exception", JOptionPane.ERROR_MESSAGE);
         }
         catch(IOException e)
         {
+            MazeSolver.playSound("kh3error.wav");
             System.out.println("Error reading file!");
+            JOptionPane.showMessageDialog(null,
+                    "Error reading file!", "IO Exception", JOptionPane.ERROR_MESSAGE);
         }
-        catch(NumberFormatException e) {
+        catch(NumberFormatException e)
+        {
+            MazeSolver.playSound("kh3error.wav");
             System.out.println("Wrong type of file inputted!");
+            JOptionPane.showMessageDialog(null,
+                    "File not found!\nPlease enter a valid .txt file.",
+                    "NumberFormat Exception", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

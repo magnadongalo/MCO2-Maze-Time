@@ -10,7 +10,7 @@ public class MazePanel extends JPanel implements ActionListener {
     private final Point start, end;
     private final int WIDTH, HEIGHT;
     private boolean running = false;
-    private Timer timer = new Timer(100, this);
+    private Timer timer = new Timer(50, this);
     private final int[][] maze;
     private List<int[]> solvedPath = null;
     private int counter = 0;
