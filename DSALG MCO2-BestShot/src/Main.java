@@ -129,9 +129,19 @@ public class Main extends JFrame implements ActionListener {
             parseMaze();
         } else if (e.getSource() == startSim) {
             if (mazeLoaded) {
-                MazeSolver.playSound("kh3menuOpen.wav");
-                new Maze(maze, rows, cols, solvedPath, start, end);
-                this.dispose();
+                if (!solvedPath.isEmpty()) {
+                    MazeSolver.playSound("kh3menuOpen.wav");
+                    new Maze(maze, rows, cols, solvedPath, start, end);
+                    this.dispose();
+                }
+                else {
+                    MazeSolver.playSound("kh3error.wav");
+                    JOptionPane.showMessageDialog(null,
+                            "This maze has no solution!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
             }
             else {
                 MazeSolver.playSound("kh3error.wav");

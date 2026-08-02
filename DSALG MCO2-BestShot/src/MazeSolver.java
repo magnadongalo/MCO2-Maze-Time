@@ -36,7 +36,7 @@ public class MazeSolver {
 
         // BFS uses a queue to check each node
         // Think of BFS as like a wave going through the maze
-        Queue<Point> queue = new LinkedList<>();
+        CustomQueue<Point> queue = new CustomQueue<>();
         boolean[][] visited = new boolean[rows][cols];
         boolean solved = false;
 
@@ -50,14 +50,15 @@ public class MazeSolver {
 
         // Initialize Starting Point
         Point startPoint = new Point(start[0], start[1], null);
-        queue.add(startPoint);
+        queue.enQueue(startPoint);
         visited[start[0]][start[1]] = true;
 
         // Keep searching until maze is solved or queue is empty
         while(!queue.isEmpty() && !solved)
         {
             // Dequeue starting point to check neighbor points
-            Point current = queue.poll();
+            Point current = queue.head();
+            queue.deQueue();
 
             // valid path has been found
             if (current.x == end[0] && current.y == end[1])
@@ -85,7 +86,7 @@ public class MazeSolver {
                             && !visited[nextX][nextY])
                     {
                         visited[nextX][nextY] = true;
-                        queue.add(new Point(nextX, nextY, current));
+                        queue.enQueue(new Point(nextX, nextY, current));
                         nodesChecked++;
                     }
                 }
