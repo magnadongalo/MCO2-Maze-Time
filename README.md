@@ -22,9 +22,9 @@ This program is compiled and ran with the following commands:
 
 
 
-javac Driver.java
+javac Main.java
 
-java Driver
+java Main
 
 
 
